@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Xunit;
 using WebApiDates;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net;
 
 namespace tests
 {
@@ -15,34 +16,29 @@ namespace tests
             _factory = factory;
         }
 
-        [Fact]
-        public async Task DateTimeTests()
+        [Theory]
+        [InlineData("2021-08-21", HttpStatusCode.OK)]
+        [InlineData("2021-21-08", HttpStatusCode.BadRequest)]
+        [InlineData("08-21-2021", HttpStatusCode.BadRequest)]                
+        [InlineData("21-08-2021", HttpStatusCode.BadRequest)] 
+        [InlineData("2021/08/21", HttpStatusCode.BadRequest)]         
+        [InlineData("2021/21/08", HttpStatusCode.BadRequest)]         
+        [InlineData("08/21/2021", HttpStatusCode.BadRequest)] 
+        [InlineData("21/08/2021", HttpStatusCode.BadRequest)] 
+        [InlineData("08.21.2021", HttpStatusCode.BadRequest)]     
+        [InlineData("21.08.2021", HttpStatusCode.BadRequest)]     
+        [InlineData("2021.08.21", HttpStatusCode.BadRequest)]     
+        [InlineData("2021.21.08", HttpStatusCode.BadRequest)]     
+        public async Task DateTimeTests(string date, HttpStatusCode expectedStatusCode)
         {
             // Arrange
-            var client = _factory.CreateClient();
-            var date = "2021-08-21";
+            using var client = _factory.CreateClient();
 
             // Act
             var response = await client.GetAsync($"/webapidates/datetime?date={date}");
 
-            Console.WriteLine(response.StatusCode);
             // Assert
-            // Assert.Equal(expectedResponseCode.ToString(), response.StatusCode);
-        }
-
-        [Fact]
-        public async Task StringTests()
-        {
-            // Arrange
-            var client = _factory.CreateClient();
-            var date = "2021-08-21";
-
-            // Act
-            var response = await client.GetAsync($"/webapidates/string?date={date}");
-
-            Console.WriteLine(response.);
-            // Assert
-            // Assert.Equal(expectedResponseCode.ToString(), response.StatusCode);
-        }        
+            Assert.Equal(expectedStatusCode, response.StatusCode);
+        }      
     }
 }
