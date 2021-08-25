@@ -9,13 +9,6 @@ namespace WebApiDates
 {
     public class IsoDateModelBinder : IModelBinder
     {
-        private readonly IModelBinder _baseBinder;
-
-        public IsoDateModelBinder(ILoggerFactory loggerFactory)
-        {
-            _baseBinder = new SimpleTypeModelBinder(typeof(DateTime), loggerFactory);
-        }
-
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
@@ -29,11 +22,14 @@ namespace WebApiDates
                 if (dateTimeParsed)
                 {
                     bindingContext.Result = ModelBindingResult.Success(dateTimeResult);
-                    return Task.CompletedTask;
+                }
+                else
+                {
+                    bindingContext.ModelState.AddModelError(bindingContext.ModelName, "Invalid date string");
                 }
             }
 
-            return _baseBinder.BindModelAsync(bindingContext);
+            return Task.CompletedTask;
         }
     }
 }
