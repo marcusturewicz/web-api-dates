@@ -1,11 +1,10 @@
-using System;
 using System.Threading.Tasks;
 using Xunit;
 using WebApiDates;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 
-namespace tests
+namespace WebApiDates.Tests
 {
     public class WebApiTests : IClassFixture<WebApplicationFactory<Startup>>
     {
@@ -19,16 +18,16 @@ namespace tests
         [Theory]
         [InlineData("2021-08-21", HttpStatusCode.OK)]
         [InlineData("2021-21-08", HttpStatusCode.BadRequest)]
-        [InlineData("08-21-2021", HttpStatusCode.BadRequest)]                
-        [InlineData("21-08-2021", HttpStatusCode.BadRequest)] 
-        [InlineData("2021/08/21", HttpStatusCode.BadRequest)]         
-        [InlineData("2021/21/08", HttpStatusCode.BadRequest)]         
-        [InlineData("08/21/2021", HttpStatusCode.BadRequest)] 
-        [InlineData("21/08/2021", HttpStatusCode.BadRequest)] 
-        [InlineData("08.21.2021", HttpStatusCode.BadRequest)]     
-        [InlineData("21.08.2021", HttpStatusCode.BadRequest)]     
-        [InlineData("2021.08.21", HttpStatusCode.BadRequest)]     
-        [InlineData("2021.21.08", HttpStatusCode.BadRequest)]     
+        [InlineData("08-21-2021", HttpStatusCode.BadRequest)]
+        [InlineData("21-08-2021", HttpStatusCode.BadRequest)]
+        [InlineData("2021/08/21", HttpStatusCode.BadRequest)]
+        [InlineData("2021/21/08", HttpStatusCode.BadRequest)]
+        [InlineData("08/21/2021", HttpStatusCode.BadRequest)]
+        [InlineData("21/08/2021", HttpStatusCode.BadRequest)]
+        [InlineData("08.21.2021", HttpStatusCode.BadRequest)]
+        [InlineData("21.08.2021", HttpStatusCode.BadRequest)]
+        [InlineData("2021.08.21", HttpStatusCode.BadRequest)]
+        [InlineData("2021.21.08", HttpStatusCode.BadRequest)]
         public async Task DateTimeTests(string date, HttpStatusCode expectedStatusCode)
         {
             // Arrange
@@ -39,6 +38,6 @@ namespace tests
 
             // Assert
             Assert.Equal(expectedStatusCode, response.StatusCode);
-        }      
+        }
     }
 }
