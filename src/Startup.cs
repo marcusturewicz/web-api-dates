@@ -29,7 +29,9 @@ namespace WebApiDates
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers(options => {
+                options.ModelBinderProviders.Insert(0, new IsoDateModelBinderProvider());
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "src", Version = "v1" });

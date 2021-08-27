@@ -8,10 +8,16 @@ namespace WebApiDates.Controllers
     [Route("[controller]")]
     public class WebApiDatesController : ControllerBase
     {
-        [HttpGet("datetime")]
-        public IActionResult GetDateTime([ModelBinder(BinderType = typeof(IsoDateModelBinder))] DateTime date)
+        [HttpGet("attribute")]
+        public IActionResult GetAttribute([ModelBinder(BinderType = typeof(IsoDateModelBinder))] DateTime date)
         {
             return Ok();
         }
+
+        [HttpGet("provider")]
+        public IActionResult GetProvider(DateTime date)
+        {
+            return Ok();
+        }        
     }
 }

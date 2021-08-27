@@ -28,16 +28,41 @@ namespace WebApiDates.Tests
         [InlineData("21.08.2021", HttpStatusCode.BadRequest)]
         [InlineData("2021.08.21", HttpStatusCode.BadRequest)]
         [InlineData("2021.21.08", HttpStatusCode.BadRequest)]
-        public async Task DateTimeTests(string date, HttpStatusCode expectedStatusCode)
+        public async Task AttributeTests(string date, HttpStatusCode expectedStatusCode)
         {
             // Arrange
             using var client = _factory.CreateClient();
 
             // Act
-            var response = await client.GetAsync($"/webapidates/datetime?date={date}");
+            var response = await client.GetAsync($"/webapidates/attribute?date={date}");
 
             // Assert
             Assert.Equal(expectedStatusCode, response.StatusCode);
         }
+
+        [Theory]
+        [InlineData("2021-08-21", HttpStatusCode.OK)]
+        [InlineData("2021-21-08", HttpStatusCode.BadRequest)]
+        [InlineData("08-21-2021", HttpStatusCode.BadRequest)]
+        [InlineData("21-08-2021", HttpStatusCode.BadRequest)]
+        [InlineData("2021/08/21", HttpStatusCode.BadRequest)]
+        [InlineData("2021/21/08", HttpStatusCode.BadRequest)]
+        [InlineData("08/21/2021", HttpStatusCode.BadRequest)]
+        [InlineData("21/08/2021", HttpStatusCode.BadRequest)]
+        [InlineData("08.21.2021", HttpStatusCode.BadRequest)]
+        [InlineData("21.08.2021", HttpStatusCode.BadRequest)]
+        [InlineData("2021.08.21", HttpStatusCode.BadRequest)]
+        [InlineData("2021.21.08", HttpStatusCode.BadRequest)]
+        public async Task ProviderTests(string date, HttpStatusCode expectedStatusCode)
+        {
+            // Arrange
+            using var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync($"/webapidates/provider?date={date}");
+
+            // Assert
+            Assert.Equal(expectedStatusCode, response.StatusCode);
+        }        
     }
 }
